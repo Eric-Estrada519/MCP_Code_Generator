@@ -1,0 +1,8 @@
+.venv/
+venv/
+generated_output
+.idea/
+.env
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,16 @@
+gradio~=5.49.1
+pip~=25.3
+emoji~=2.15.0
+attrs~=25.4.0
+wheel~=0.45.1
+google~=3.0.0
+protobuf~=5.29.5
+cryptography~=46.0.3
+Pillow~=10.1.0
+docutils~=0.22.3
+tornado~=6.4
+Jinja2~=3.1.2
+mcp~=1.21.0
+python-dotenv~=1.2.1
+langchain-google-genai~=3.0.3
+langchain-mcp-adapters~=0.1.3

@@ -1,0 +1,264 @@
+# INF119 Final Project – MCP Multi-Agent Code Generator (Patched)
+# Eric Estrada 
+# Name: Ivan Gonzalez 
+# Chidubem Adinna 
+# Alyas Thomas 
+This project implements a multi-agent system using MCP (Model Context Protocol) for communication between agents. It exposes a Gradio GUI that takes a natural language description of a desired software application and returns a ZIP file containing:
+
+- Generated application code (Python)
+- Generated test cases (Python, with at least 10 tests)
+- Instructions on how to run the app and tests
+
+All application and test code is generated at runtime by MCP tools that call an external LLM (Google Gemini via `langchain_google_genai`), with model usage tracked.
+
+For stability:
+
+- The MCP servers lazily initialize the LLM and return clear error strings if initialization fails.
+- Gradio analytics are disabled to avoid pandas + Python 3.12 issues.
+- API key can be provided via `.env` or environment variables.
+
+> For grading, the main input will be the “Calorie Burner” description pasted into the GUI.
+
+
+
+---
+
+# 0. Important Setup Notes (READ FIRST)
+
+This project **must use Python 3.10 or 3.11**.  
+**Python 3.12 is NOT supported** (multiple dependencies break, including tiktoken, Gradio analytics, etc.).
+
+If your system default shows something like:
+
+```
+/Library/Frameworks/Python.framework/Versions/3.12/bin/python3
+```
+
+then you **must explicitly use `python3.11`**.
+If you encounter an error you may need to install python 3.11 via 
+https://www.python.org/ftp/python/3.11.9/python-3.11.9-macos11.pkg for mac
+https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe for windows
+
+
+
+---
+
+# 1. Fresh Install (Recommended for Graders / New Machines)
+
+Start with a clean folder and clone the repository:
+
+```bash
+git clone https://github.com/ivang900/IN4MATX119_Final_Project.git
+cd IN4MATX119_Final_Project
+```
+
+---
+
+# 2. Create a Local Virtual Environment
+
+Create the virtual environment **inside the project folder**:
+
+For Mac
+```bash
+python3.11 -m venv .venv
+```
+
+For window
+Option A (recommended):
+```bash
+py -3.11 -m venv .venv
+```
+
+Option B (if py is missing):
+```bash
+python -m venv .venv
+
+```
+
+
+Activate it:
+
+for Mac
+```bash
+source .venv/bin/activate
+```
+
+for Windows
+```bash
+.\.venv\Scripts/activate
+```
+
+
+Verify you're using the correct Python:
+
+For Mac
+```bash
+which python
+```
+
+For Windows
+```bash
+Get-Command python
+```
+
+Expected output (example):
+
+```
+…/IN4MATX119_Final_Project/.venv/bin/python
+```
+
+If it shows a system Python 3.12 path, the venv was not activated correctly.
+
+---
+
+# 3. Install Required Dependencies
+
+With the venv activated:
+
+For Mac
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+For Windows
+```bash
+python.exe -m pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+This installs:
+
+- MCP server framework  
+- LangChain client  
+- Google GenAI tools  
+- Gradio GUI  
+- ZIP utilities  
+- Model usage tracker  
+
+---
+
+# 4. Create Your `.env` File
+
+The project expects an environment variable containing your API key.
+
+Create the file by running the bash below or by making it yourself:
+
+```bash
+touch .env
+```
+
+Add the following lines into the .env file you made:
+
+```
+GOOGLE_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_api_key_here
+```
+
+---
+
+# 5. Running the Application
+
+Once the venv is active:
+
+For Mac
+```bash
+python3 -m gui.gradio_app
+```
+
+For Windows
+```bash
+python -m gui.gradio_app
+```
+or
+```bash
+py -m gui.gradio_app
+```
+
+
+
+**Do NOT run:**
+
+```bash
+python3 gui/gradio_app.py
+```
+
+This breaks Python module resolution.
+
+Running the correct command launches the Gradio GUI in your browser, where you paste the assignment prompt (e.g., “Calorie Burner”) and generate the deliverable ZIP.
+
+---
+
+# 6. VS Code Users: Select the Correct Interpreter
+
+If using VS Code:
+
+```
+⌘ + Shift + P → “Python: Select Interpreter”
+```
+
+Select:
+
+```
+./.venv/bin/python (Mac)
+.\.venv\Scripts\python  (Windows)
+```
+
+This prevents VS Code from accidentally using Python 3.12.
+
+---
+
+# 7. Ensuring `.venv` and `.env` Are Visible in VS Code
+
+If you don’t see the files:
+
+**VS Code hides dotfiles by default.**
+
+Enable visibility:
+
+```
+Settings → search "files.exclude"
+```
+
+Or explicitly unhide:
+
+```json
+"files.exclude": {
+    "**/.venv": false,
+    "**/.env": false
+}
+```
+
+---
+
+# 8. Project Structure
+
+```
+├── gui/
+│   └── gradio_app.py           # GUI entry point
+├── mcp_servers/
+│   ├── codegen_server.py       # MCP server: generates application code
+│   ├── testgen_server.py       # MCP server: generates 10+ test cases
+│   └── refinement_server.py    # MCP server: refinement pass
+├── orchestrator/
+│   ├── orchestrator_client.py  # Coordinates all MCP server tools
+│   └── zip_util.py             # Builds final ZIP
+├── model_tracker.py            # Tracks model usage across agents
+├── requirements.txt
+└── README.md
+```
+
+---
+
+# 9. What the Generated ZIP Contains
+
+Running the GUI produces:
+
+- `app/` — full application source code  
+- `tests/` — ≥10 autogenerated unit tests
+
+Everything is generated dynamically at runtime via MCP tools.
+Run the app from this directory, it should generate a file in /generated_output 
+OR you can drag the zip you downloaded from the GUI 
+IF you open else where you will need to pip install Gradio and Pytest
+---
