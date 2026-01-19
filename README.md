@@ -48,8 +48,7 @@ https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe for windows
 Start with a clean folder and clone the repository:
 
 ```bash
-git clone https://github.com/ivang900/IN4MATX119_Final_Project.git
-cd IN4MATX119_Final_Project
+git clone https://github.com/Eric-Estrada519/MCP_Code_Generator.git
 ```
 
 ---
