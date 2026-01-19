@@ -49,6 +49,7 @@ Start with a clean folder and clone the repository:
 
 ```bash
 git clone https://github.com/Eric-Estrada519/MCP_Code_Generator.git
+cd MCP_Code_Generator
 ```
 
 ---
